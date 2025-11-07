@@ -5,6 +5,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\SystemSettingController;
 
 
 Route::get('/', function () {
@@ -24,7 +25,8 @@ Route::resource('categories', CategoryController::class);
 Route::resource('products', ProductController::class);
 Route::resource('customers', CustomerController::class);
 Route::resource('sales', SaleController::class);
-
+Route::get('settings', [SystemSettingController::class, 'index'])->name('settings.index');
+Route::post('settings', [SystemSettingController::class, 'update'])->name('settings.update');
 
 
 
