@@ -335,7 +335,7 @@
         <li><a href="{{ route('customers.index') }}">👥 ️Clientes</a></li>
         <li><a href="{{ route('sales.create') }}">🛒 **Nueva Venta (POS)**</a></li>
         <li><a href="{{ route('sales.index') }}">🧾 **Historial de Ventas**</a></li>
-        <li><a href="#">⚙️ Config</a></li>
+        <li><a href="{{ route('settings.index') }}">⚙️ Configuración</a></li>
     </ul>
 </nav>
 

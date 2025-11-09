@@ -85,6 +85,12 @@
 
                 <div style="text-align: right;">
                     <h3>Subtotal: ${{ number_format($subtotal, 2) }}</h3>
+
+                    {{-- MOSTRAR IMPUESTOS SI HAY --}}
+                    @if($tax_amount > 0)
+                        <h3>Impuestos ({{ number_format($tax_rate, 2) }}%): ${{ number_format($tax_amount, 2) }}</h3>
+                    @endif
+
                     <h2>Total: ${{ number_format($total, 2) }}</h2>
                 </div>
 
