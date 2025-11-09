@@ -2,20 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SystemSetting;
 use Illuminate\Http\Request;
-use App\Settings\GeneralSettings;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\DB;
 
 class SystemSettingController extends Controller
 {
-    public function index(GeneralSettings $settings)
+    /**
+     * Muestra el formulario de configuración
+     */
+    public function index()
     {
+        $settings = SystemSetting::getSettings();
+
         return view('settings.index', [
             'settings' => $settings
         ]);
     }
 
+    /**
+     * Actualiza las configuraciones del sistema
+     */
     public function update(Request $request): RedirectResponse
     {
         $validated = $request->validate([
@@ -33,17 +40,11 @@ class SystemSettingController extends Controller
         $validated['company_phone'] = $validated['company_phone'] ?? '';
         $validated['receipt_message'] = $validated['receipt_message'] ?? '';
 
-        // Guardar directamente en la base de datos
-        DB::table('settings')
-            ->where('group', 'general')
-            ->where('name', 'general')
-            ->update([
-                'payload' => json_encode($validated),
-                'updated_at' => now(),
-            ]);
+        // Convertir tax_rate a float
+        $validated['tax_rate'] = (float) $validated['tax_rate'];
 
-        // Limpiar la caché de settings
-        cache()->forget('settings.general');
+        // Guardar las configuraciones usando el modelo
+        SystemSetting::updateSettings($validated);
 
         return redirect()->route('settings.index')
             ->with('success', 'Configuraciones actualizadas exitosamente.');

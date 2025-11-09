@@ -5,7 +5,7 @@ namespace App\Livewire;
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Sale;
-use App\Settings\GeneralSettings;
+use App\Models\SystemSetting;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -18,8 +18,8 @@ class PosComponent extends Component
     // ----- PROPIEDADES PARA LA VENTA -----
     public $cart = [];
     public $subtotal = 0;
-    public $tax_amount = 0;      // ← NUEVO
-    public $tax_rate = 0;        // ← NUEVO
+    public $tax_amount = 0;
+    public $tax_rate = 0;
     public $total = 0;
     public $customer_id;
 
@@ -28,11 +28,10 @@ class PosComponent extends Component
     public $amount_paid;
     public $change_amount = 0;
 
-    // ← NUEVO MÉTODO
     public function mount()
     {
-        $settings = app(GeneralSettings::class);
-        $this->tax_rate = $settings->tax_rate;
+        $settings = SystemSetting::getSettings();
+        $this->tax_rate = $settings->tax_rate ?? 0;
     }
 
     public function render()
@@ -139,7 +138,7 @@ class PosComponent extends Component
                 'user_id' => Auth::id() ?? 1,
                 'subtotal' => $this->subtotal,
                 'discount_amount' => 0,
-                'tax_amount' => $this->tax_amount, // ← NUEVO
+                'tax_amount' => $this->tax_amount,
                 'total' => $this->total,
                 'payment_method' => $this->payment_method,
                 'amount_paid' => $this->amount_paid,
@@ -177,7 +176,6 @@ class PosComponent extends Component
         }
     }
 
-    // ← MÉTODO MODIFICADO
     private function calculateTotals()
     {
         $this->subtotal = 0;
@@ -185,10 +183,10 @@ class PosComponent extends Component
             $this->subtotal += $item['price'] * ($item['quantity'] > 0 ? $item['quantity'] : 1);
         }
 
-        // ← NUEVO: Calcular impuestos
+        // Calcular impuestos
         $this->tax_amount = ($this->subtotal * $this->tax_rate) / 100;
 
-        // ← NUEVO: Total = Subtotal + Impuestos
+        // Total = Subtotal + Impuestos
         $this->total = $this->subtotal + $this->tax_amount;
 
         $this->change_amount = 0;
@@ -199,7 +197,7 @@ class PosComponent extends Component
     {
         $this->cart = [];
         $this->subtotal = 0;
-        $this->tax_amount = 0; // ← NUEVO
+        $this->tax_amount = 0;
         $this->total = 0;
         $this->customer_id = null;
         $this->search = '';
