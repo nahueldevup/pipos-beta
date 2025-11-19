@@ -2,8 +2,8 @@
 
 @section('content')
     @php
-        // Obtener configuraciones usando el modelo
-        $settings = \App\Models\SystemSetting::getSettings();
+        // CORRECCIÓN: Usar el nuevo modelo Setting y el método getGeneral()
+        $settings = \App\Models\Setting::getGeneral();
     @endphp
 
     <div class="container mx-auto px-4 py-8">

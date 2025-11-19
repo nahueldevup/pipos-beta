@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SystemSetting;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 
-class SystemSettingController extends Controller
+class SettingController extends Controller
 {
     /**
      * Muestra el formulario de configuración
      */
     public function index()
     {
-        $settings = SystemSetting::getSettings();
+        // Usamos el nuevo método del modelo Setting
+        $settings = Setting::getGeneral();
 
         return view('settings.index', [
             'settings' => $settings
@@ -35,7 +36,7 @@ class SystemSettingController extends Controller
             'theme' => 'required|in:light,dark',
         ]);
 
-        // Convertir campos vacíos a string vacío en lugar de null
+        // Convertir campos vacíos a string vacío
         $validated['company_address'] = $validated['company_address'] ?? '';
         $validated['company_phone'] = $validated['company_phone'] ?? '';
         $validated['receipt_message'] = $validated['receipt_message'] ?? '';
@@ -43,8 +44,8 @@ class SystemSettingController extends Controller
         // Convertir tax_rate a float
         $validated['tax_rate'] = (float) $validated['tax_rate'];
 
-        // Guardar las configuraciones usando el modelo
-        SystemSetting::updateSettings($validated);
+        // Usamos el nuevo método de actualización del modelo Setting
+        Setting::updateGeneral($validated);
 
         return redirect()->route('settings.index')
             ->with('success', 'Configuraciones actualizadas exitosamente.');

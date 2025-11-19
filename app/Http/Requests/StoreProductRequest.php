@@ -1,9 +1,7 @@
 <?php
 //php artisan make:request StoreProductRequest
 namespace App\Http\Requests;
-
 use Illuminate\Foundation\Http\FormRequest;
-
 class StoreProductRequest extends FormRequest
 {
     public function authorize(): bool

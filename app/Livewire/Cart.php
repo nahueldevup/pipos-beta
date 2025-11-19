@@ -1,15 +1,15 @@
 <?php
-
+//php artisan make:livewire Cart
 namespace App\Livewire;
 
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Sale;
-use App\Models\SystemSetting;
+use App\Models\Setting; // <--- CAMBIO: Usar el nuevo modelo Setting
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Attributes\Computed; // Importante para optimización
-use Livewire\Attributes\On;       // Importante para eventos
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Cart extends Component
@@ -28,7 +28,9 @@ class Cart extends Component
 
     public function mount()
     {
-        $settings = SystemSetting::getSettings();
+        // CAMBIO: Usar el nuevo método estático getGeneral()
+        $settings = Setting::getGeneral();
+        
         $this->tax_rate = $settings->tax_rate ?? 0;
     }
 
@@ -131,9 +133,6 @@ class Cart extends Component
             $sale = Sale::create([
                 'sale_number' => 'VTA-' . date('Ymd') . '-' . uniqid(),
                 'customer_id' => $this->customer_id,
-                // OJO: Auth::id() ?? 1 es peligroso.
-                // Asegúrate de que esta ruta esté protegida por middleware 'auth'.
-                // Debería ser solo 'user_id' => Auth::id(),
                 'user_id' => Auth::id() ?? 1,
                 'subtotal' => $this->subtotal,
                 'discount_amount' => 0,
@@ -169,7 +168,6 @@ class Cart extends Component
 
         if ($sale) {
             $this->resetState();
-            // Despacha un evento para notificar a otros componentes si es necesario
             $this->dispatch('sale-saved');
             return redirect()->route('sales.show', $sale);
         } else {
@@ -181,7 +179,6 @@ class Cart extends Component
     {
         $this->subtotal = 0;
         foreach ($this->cart as $item) {
-            // Asegurarse de que la cantidad sea válida
             $quantity = filter_var($item['quantity'], FILTER_VALIDATE_INT);
             if ($quantity === false || $quantity < 1) {
                 $quantity = 1;
@@ -189,17 +186,14 @@ class Cart extends Component
             $this->subtotal += $item['price'] * $quantity;
         }
 
-        // ...
         $this->tax_amount = ($this->subtotal * $this->tax_rate) / 100;
         $this->total = $this->subtotal + $this->tax_amount;
-        // ...
 
-        // Recalcular el cambio si el monto pagado ya estaba ingresado
         if (!empty($this->amount_paid)) {
             $this->change_amount = $this->amount_paid - $this->total;
         } else {
             $this->change_amount = 0;
-            $this->amount_paid = ''; // O null
+            $this->amount_paid = '';
         }
     }
 

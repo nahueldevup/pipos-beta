@@ -1,5 +1,5 @@
 <?php
-
+//php artisan make:livewire ProductSearch
 namespace App\Livewire;
 
 use App\Models\Product;

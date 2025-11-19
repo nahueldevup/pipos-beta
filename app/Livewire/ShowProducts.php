@@ -2,6 +2,7 @@
 //php artisan make:livewire ShowProducts
 namespace App\Livewire;
 use Illuminate\Validation\Rule;
+use App\Models\Setting;
 use App\Models\Category;
 use App\Models\Product;
 use Livewire\Component;
@@ -164,7 +165,7 @@ class ShowProducts extends Component
     }
 
     // ----- UTILIDAD PARA LIMPIAR CAMPOS -----
-    private function resetInputFields()
+private function resetInputFields()
     {
         $this->currentProduct = null;
         $this->barcode = '';
@@ -173,7 +174,11 @@ class ShowProducts extends Component
         $this->purchase_price = '';
         $this->sale_price = '';
         $this->stock = 0;
-        $this->min_stock = 5;
+        
+        // MEJORA: Usar el valor de la configuración global (o 5 si no existe)
+        // Esto asegura que el formulario respete tu configuración del sistema.
+        $this->min_stock = Setting::getGeneral()->low_stock_alert ?? 5; 
+        
         $this->category_id = null;
         $this->active = true;
     }

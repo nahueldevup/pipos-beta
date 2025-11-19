@@ -1,9 +1,7 @@
 <?php
-
-namespace App\Http\Requests;
-
-use Illuminate\Foundation\Http\FormRequest;
 //php artisan make:request UpdateCustomerRequest
+namespace App\Http\Requests;
+use Illuminate\Foundation\Http\FormRequest;
 class UpdateCustomerRequest extends FormRequest
 {
     /**

@@ -1,5 +1,5 @@
 <?php
-
+//php artisan make:livewire PosComponent
 namespace App\Livewire;
 
 use Livewire\Component;
