@@ -1,5 +1,6 @@
 <?php
-//php artisan make:model Category -mcrfs
+
+// php artisan make:model Category -mcrfs
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

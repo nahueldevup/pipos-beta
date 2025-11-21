@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
+use App\Models\Customer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 
@@ -36,6 +36,7 @@ class CustomerController extends Controller
 
         // Asumo que tienes un 'ShowCustomers' que mostrará este mensaje
         session()->flash('success', 'Cliente creado exitosamente.');
+
         return Redirect::route('customers.index');
     }
 
@@ -63,6 +64,7 @@ class CustomerController extends Controller
         $customer->update($request->validated());
 
         session()->flash('success', 'Cliente actualizado exitosamente.');
+
         return Redirect::route('customers.index');
     }
 
@@ -74,6 +76,7 @@ class CustomerController extends Controller
         $customer->delete();
 
         session()->flash('success', 'Cliente eliminado exitosamente.');
+
         return Redirect::route('customers.index');
     }
 }

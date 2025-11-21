@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Product;
 use App\Models\Category;
+use App\Models\Product;
 
 test('puede ver lista de productos', function () {
     Product::factory()->count(3)->create(['active' => true]);

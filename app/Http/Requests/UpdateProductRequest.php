@@ -1,8 +1,12 @@
 <?php
-//php artisan make:request UpdateProductRequest
+
+// php artisan make:request UpdateProductRequest
+
 namespace App\Http\Requests;
+
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+
 class UpdateProductRequest extends FormRequest
 {
     public function authorize(): bool
@@ -13,6 +17,7 @@ class UpdateProductRequest extends FormRequest
     public function rules(): array
     {
         $productId = $this->route('product')->id;
+
         return [
             'barcode' => [
                 'required',
@@ -27,7 +32,7 @@ class UpdateProductRequest extends FormRequest
             'stock' => 'required|integer|min:0',
             'min_stock' => 'required|integer|min:0',
             'category_id' => 'nullable|exists:categories,id',
-            'active' => 'boolean'
+            'active' => 'boolean',
         ];
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-//php artisan make:model SaleDetail -mcrfs
+// php artisan make:model SaleDetail -mcrfs
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;

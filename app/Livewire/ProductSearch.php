@@ -1,5 +1,7 @@
 <?php
-//php artisan make:livewire ProductSearch
+
+// php artisan make:livewire ProductSearch
+
 namespace App\Livewire;
 
 use App\Models\Product;
@@ -14,16 +16,16 @@ class ProductSearch extends Component
         $search = trim($this->search);
         $products = [];
 
-        if (!empty($search)) {
+        if (! empty($search)) {
             $query = Product::active();
 
             if (is_numeric($search)) {
-                $query->where('barcode', 'LIKE', '%' . $search . '%');
+                $query->where('barcode', 'LIKE', '%'.$search.'%');
             } else {
-                $query->where(function($q) use ($search) {
-                    $q->where('name', 'LIKE', '%' . $search . '%')
-                        ->orWhereHas('category', function($subQuery) use ($search) {
-                            $subQuery->where('name', 'LIKE', '%' . $search . '%');
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'LIKE', '%'.$search.'%')
+                        ->orWhereHas('category', function ($subQuery) use ($search) {
+                            $subQuery->where('name', 'LIKE', '%'.$search.'%');
                         });
                 });
             }

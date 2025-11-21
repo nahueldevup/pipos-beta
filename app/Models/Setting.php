@@ -18,12 +18,12 @@ class Setting extends Model
         'group',
         'name',
         'locked',
-        'payload'
+        'payload',
     ];
 
     protected $casts = [
         'payload' => 'array',
-        'locked' => 'boolean'
+        'locked' => 'boolean',
     ];
 
     /**
@@ -36,7 +36,7 @@ class Setting extends Model
                 ['group' => 'general', 'name' => 'general'],
                 [
                     'locked' => false,
-                    'payload' => self::defaultGeneralPayload()
+                    'payload' => self::defaultGeneralPayload(),
                 ]
             );
 
@@ -53,7 +53,7 @@ class Setting extends Model
             ['group' => 'general', 'name' => 'general'],
             [
                 'locked' => false,
-                'payload' => $data
+                'payload' => $data,
             ]
         );
 

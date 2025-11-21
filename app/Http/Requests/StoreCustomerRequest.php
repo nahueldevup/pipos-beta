@@ -1,7 +1,11 @@
 <?php
-//php artisan make:request StoreCustomerReques
+
+// php artisan make:request StoreCustomerReques
+
 namespace App\Http\Requests;
+
 use Illuminate\Foundation\Http\FormRequest;
+
 class StoreCustomerRequest extends FormRequest
 {
     /**

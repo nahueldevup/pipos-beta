@@ -1,6 +1,6 @@
 <?php
 
-//php artisan make:model Sale -mcrfs
+// php artisan make:model Sale -mcrfs
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -29,7 +29,9 @@ return new class extends Migration
             // Índices
             $table->index('created_at');
             $table->index('user_id');
+
         });
+
     }
 
     public function down(): void

@@ -1,14 +1,17 @@
 <?php
-//php artisan make:request StoreProductRequest
+
+// php artisan make:request StoreProductRequest
+
 namespace App\Http\Requests;
+
 use Illuminate\Foundation\Http\FormRequest;
+
 class StoreProductRequest extends FormRequest
 {
     public function authorize(): bool
     {
         return true;
     }
-
 
     public function rules(): array
     {
@@ -21,7 +24,7 @@ class StoreProductRequest extends FormRequest
             'stock' => 'required|integer|min:0', // Sugerencia
             'min_stock' => 'required|integer|min:0', // Sugerencia
             'category_id' => 'nullable|exists:categories,id', // Añadido
-            'active' => 'boolean'
+            'active' => 'boolean',
         ];
     }
 }

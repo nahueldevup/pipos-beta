@@ -1,6 +1,9 @@
 <?php
-//php artisan make:request StoreSaleRequest
+
+// php artisan make:request StoreSaleRequest
+
 namespace App\Http\Requests;
+
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -26,7 +29,7 @@ class StoreSaleRequest extends FormRequest
             'customer_id' => 'required|exists:customers,id',
             'payment_method' => ['required', Rule::in(['efectivo', 'tarjeta', 'transferencia'])],
             'total' => 'required|numeric|min:0',
-            'amount_paid' => 'required|numeric|min:' . $this->input('total', 0), // Debe ser al menos el total
+            'amount_paid' => 'required|numeric|min:'.$this->input('total', 0), // Debe ser al menos el total
             'notes' => 'nullable|string',
 
             // Campos de los Detalles (el 'cart' o carrito)

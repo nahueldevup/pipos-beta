@@ -1,5 +1,7 @@
 <?php
-//php artisan make:livewire ShowCategories
+
+// php artisan make:livewire ShowCategories
+
 namespace App\Livewire;
 
 use App\Models\Category;
@@ -10,12 +12,19 @@ use Livewire\WithPagination;
 class ShowCategories extends Component
 {
     use WithPagination;
+
     public $search = '';
+
     public $showModal = false;
+
     public $showDeleteModal = false;
+
     public ?Category $currentCategory = null;
+
     public $name;
+
     public $active = true; // Por defecto, una nueva categoría estará activa
+
     protected function rules()
     {
         if (isset($this->currentCategory->id)) {
@@ -43,7 +52,7 @@ class ShowCategories extends Component
      */
     public function render()
     {
-        $categories = Category::where('name', 'LIKE', '%' . $this->search . '%')
+        $categories = Category::where('name', 'LIKE', '%'.$this->search.'%')
             ->latest()
             ->paginate(10);
 

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Setting;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
@@ -17,7 +17,7 @@ class SettingController extends Controller
         $settings = Setting::getGeneral();
 
         return view('settings.index', [
-            'settings' => $settings
+            'settings' => $settings,
         ]);
     }
 

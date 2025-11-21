@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Sale;
+use Exception;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
-use Exception;
 
 class SaleController extends Controller
 {
@@ -104,12 +104,14 @@ class SaleController extends Controller
             DB::commit();
 
             session()->flash('success', 'Venta cancelada. Se restauró el stock.');
+
             return Redirect::route('sales.index'); // O a sales.show
 
         } catch (Exception $e) {
             DB::rollBack();
             // --- LÍNEA CORREGIDA ---
-            Log::error("Error al cancelar la venta: " . $e->getMessage());
+            Log::error('Error al cancelar la venta: '.$e->getMessage());
+
             // --- FIN DE LA CORRECCIÓN ---
             return Redirect::back()->withErrors(['error' => 'Error al cancelar la venta.']);
         }

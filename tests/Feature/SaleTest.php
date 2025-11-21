@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\Sale;
 use App\Models\Customer;
 use App\Models\Product;
+use App\Models\Sale;
 use App\Models\User;
 
 beforeEach(function () {
@@ -78,7 +78,7 @@ test('venta reduce stock del producto', function () {
 
 test('venta pertenece a un cliente', function () {
     $sale = Sale::factory()->create([
-        'customer_id' => $this->customer->id
+        'customer_id' => $this->customer->id,
     ]);
 
     expect($sale->customer)->toBeInstanceOf(Customer::class);
@@ -87,7 +87,7 @@ test('venta pertenece a un cliente', function () {
 
 test('venta pertenece a un usuario', function () {
     $sale = Sale::factory()->create([
-        'user_id' => $this->user->id
+        'user_id' => $this->user->id,
     ]);
 
     expect($sale->user)->toBeInstanceOf(User::class);

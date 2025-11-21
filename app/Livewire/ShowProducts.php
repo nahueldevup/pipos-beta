@@ -1,10 +1,13 @@
 <?php
-//php artisan make:livewire ShowProducts
+
+// php artisan make:livewire ShowProducts
+
 namespace App\Livewire;
-use Illuminate\Validation\Rule;
-use App\Models\Setting;
+
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Setting;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -17,18 +20,28 @@ class ShowProducts extends Component
 
     // ----- PROPIEDADES PARA EL MODAL -----
     public $showModal = false;
+
     public $showDeleteModal = false;
 
     // ----- PROPIEDADES DEL MODELO PRODUCT (PARA EL FORMULARIO) -----
-    public ?Product $currentProduct= null; // El producto que estamos editando/borrando
+    public ?Product $currentProduct = null; // El producto que estamos editando/borrando
+
     public $barcode;
+
     public $name;
+
     public $description;
+
     public $purchase_price;
+
     public $sale_price;
+
     public $stock;
+
     public $min_stock;
+
     public $category_id;
+
     public $active = true;
 
     protected function rules()
@@ -38,6 +51,7 @@ class ShowProducts extends Component
 
             // REGLAS DE ACTUALIZACIÓN
             $productId = $this->currentProduct->id;
+
             return [
                 'barcode' => [
                     'required',
@@ -52,7 +66,7 @@ class ShowProducts extends Component
                 'stock' => 'required|integer|min:0',
                 'min_stock' => 'required|integer|min:0',
                 'category_id' => 'nullable|exists:categories,id',
-                'active' => 'boolean'
+                'active' => 'boolean',
             ];
 
         } else {
@@ -67,10 +81,11 @@ class ShowProducts extends Component
                 'stock' => 'required|integer|min:0',
                 'min_stock' => 'required|integer|min:0',
                 'category_id' => 'nullable|exists:categories,id',
-                'active' => 'boolean'
+                'active' => 'boolean',
             ];
         }
     }
+
     // ----- MÉTODO PRINCIPAL DE RENDERIZADO -----
     public function render()
     {
@@ -81,16 +96,14 @@ class ShowProducts extends Component
         // 3. Aplicamos tu lógica condicional
         if (empty($search)) {
             // Si no hay búsqueda, no se añade ningún filtro extra
-        }
-        elseif (is_numeric($search)) {
+        } elseif (is_numeric($search)) {
             // Si es numérico, buscar SÓLO por código de barras
-            $query->where('barcode', 'LIKE', '%' . $search . '%');
-        }
-        else {
-            $query->where(function($q) use ($search) {
-                $q->where('name', 'LIKE', '%' . $search . '%')
-                    ->orWhereHas('category', function($subQuery) use ($search) {
-                        $subQuery->where('name', 'LIKE', '%' . $search . '%');
+            $query->where('barcode', 'LIKE', '%'.$search.'%');
+        } else {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'LIKE', '%'.$search.'%')
+                    ->orWhereHas('category', function ($subQuery) use ($search) {
+                        $subQuery->where('name', 'LIKE', '%'.$search.'%');
                     });
             });
         }
@@ -165,7 +178,7 @@ class ShowProducts extends Component
     }
 
     // ----- UTILIDAD PARA LIMPIAR CAMPOS -----
-private function resetInputFields()
+    private function resetInputFields()
     {
         $this->currentProduct = null;
         $this->barcode = '';
@@ -174,11 +187,11 @@ private function resetInputFields()
         $this->purchase_price = '';
         $this->sale_price = '';
         $this->stock = 0;
-        
+
         // MEJORA: Usar el valor de la configuración global (o 5 si no existe)
         // Esto asegura que el formulario respete tu configuración del sistema.
-        $this->min_stock = Setting::getGeneral()->low_stock_alert ?? 5; 
-        
+        $this->min_stock = Setting::getGeneral()->low_stock_alert ?? 5;
+
         $this->category_id = null;
         $this->active = true;
     }

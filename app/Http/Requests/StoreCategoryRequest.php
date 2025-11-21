@@ -1,5 +1,7 @@
 <?php
-//php artisan make:request StoreCategoryRequest
+
+// php artisan make:request StoreCategoryRequest
+
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;

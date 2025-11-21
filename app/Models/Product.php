@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+
 class Product extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'barcode',
         'name',
@@ -18,8 +20,9 @@ class Product extends Model
         'stock',
         'min_stock',
         'category_id',
-        'active'
+        'active',
     ];
+
     protected $casts = [
         'active' => 'boolean',
         'purchase_price' => 'decimal:2',
@@ -31,19 +34,22 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class);
     }
-    //metodo para obtener la ganancia
+
+    // metodo para obtener la ganancia
     public function ganancia(): Attribute
     {
         return Attribute::make(
             get: fn () => $this->sale_price - $this->purchase_price,
         );
     }
-    //metodos para filtrar los productos por activos
+
+    // metodos para filtrar los productos por activos
     public function scopeActive($query)
     {
         return $query->where('active', true);
     }
-   //metodo para filtrar los productos por stock bajo
+
+    // metodo para filtrar los productos por stock bajo
     public function scopeStockBajo($query)
     {
         return $query->whereColumn('stock', '<=', 'min_stock');

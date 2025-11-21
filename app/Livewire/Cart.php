@@ -1,13 +1,15 @@
 <?php
-//php artisan make:livewire Cart
+
+// php artisan make:livewire Cart
+
 namespace App\Livewire;
 
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Sale;
 use App\Models\Setting; // <--- CAMBIO: Usar el nuevo modelo Setting
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -16,21 +18,28 @@ class Cart extends Component
 {
     // ----- PROPIEDADES PARA LA VENTA -----
     public $cart = [];
+
     public $subtotal = 0;
+
     public $tax_amount = 0;
+
     public $tax_rate = 0;
+
     public $total = 0;
+
     public $customer_id;
 
     public $payment_method = 'efectivo';
+
     public $amount_paid;
+
     public $change_amount = 0;
 
     public function mount()
     {
         // CAMBIO: Usar el nuevo método estático getGeneral()
         $settings = Setting::getGeneral();
-        
+
         $this->tax_rate = $settings->tax_rate ?? 0;
     }
 
@@ -58,14 +67,15 @@ class Cart extends Component
     public function addProduct($productId)
     {
         $product = Product::find($productId);
-        if (!$product) {
+        if (! $product) {
             return;
         }
 
         $quantityInCart = $this->cart[$product->id]['quantity'] ?? 0;
 
         if ($product->stock <= $quantityInCart) {
-            session()->flash('stock_error', 'No hay más stock para: ' . $product->name);
+            session()->flash('stock_error', 'No hay más stock para: '.$product->name);
+
             return;
         }
 
@@ -77,7 +87,7 @@ class Cart extends Component
                 'barcode' => $product->barcode,
                 'price' => $product->sale_price,
                 'quantity' => 1,
-                'stock' => $product->stock
+                'stock' => $product->stock,
             ];
         }
         $this->calculateTotals();
@@ -106,14 +116,14 @@ class Cart extends Component
                     $this->cart[$productId]['quantity'] = 1;
                 } elseif ($quantity > $item['stock']) {
                     $this->cart[$productId]['quantity'] = $item['stock'];
-                    session()->flash('stock_error', 'Stock máximo alcanzado para: ' . $item['name']);
+                    session()->flash('stock_error', 'Stock máximo alcanzado para: '.$item['name']);
                 }
             }
 
             $this->calculateTotals();
         }
 
-        if ($propertyName == 'amount_paid' && !empty($this->amount_paid)) {
+        if ($propertyName == 'amount_paid' && ! empty($this->amount_paid)) {
             $this->change_amount = $this->amount_paid - $this->total;
         }
     }
@@ -124,14 +134,14 @@ class Cart extends Component
             'customer_id' => 'required|exists:customers,id',
             'cart' => 'required|array|min:1',
             'payment_method' => 'required',
-            'amount_paid' => 'required|numeric|min:' . $this->total,
+            'amount_paid' => 'required|numeric|min:'.$this->total,
         ]);
 
         $sale = null;
 
         DB::transaction(function () use (&$sale) {
             $sale = Sale::create([
-                'sale_number' => 'VTA-' . date('Ymd') . '-' . uniqid(),
+                'sale_number' => 'VTA-'.date('Ymd').'-'.uniqid(),
                 'customer_id' => $this->customer_id,
                 'user_id' => Auth::id() ?? 1,
                 'subtotal' => $this->subtotal,
@@ -147,7 +157,7 @@ class Cart extends Component
             foreach ($this->cart as $productId => $item) {
                 $product = Product::find($productId);
                 if ($product->stock < $item['quantity']) {
-                    throw new \Exception('No hay suficiente stock para el producto: ' . $product->name);
+                    throw new \Exception('No hay suficiente stock para el producto: '.$product->name);
                 }
 
                 $lineTotal = $item['price'] * $item['quantity'];
@@ -169,6 +179,7 @@ class Cart extends Component
         if ($sale) {
             $this->resetState();
             $this->dispatch('sale-saved');
+
             return redirect()->route('sales.show', $sale);
         } else {
             session()->flash('error', 'Ocurrió un error inesperado al guardar la venta.');
@@ -189,7 +200,7 @@ class Cart extends Component
         $this->tax_amount = ($this->subtotal * $this->tax_rate) / 100;
         $this->total = $this->subtotal + $this->tax_amount;
 
-        if (!empty($this->amount_paid)) {
+        if (! empty($this->amount_paid)) {
             $this->change_amount = $this->amount_paid - $this->total;
         } else {
             $this->change_amount = 0;

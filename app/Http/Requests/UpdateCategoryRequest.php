@@ -1,6 +1,9 @@
 <?php
-//php artisan make:request UpdateCategoryRequest
+
+// php artisan make:request UpdateCategoryRequest
+
 namespace App\Http\Requests;
+
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule; // Importante para el 'unique'
 

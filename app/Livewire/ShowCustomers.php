@@ -1,5 +1,7 @@
 <?php
-//php artisan make:livewire ShowCustomers
+
+// php artisan make:livewire ShowCustomers
+
 namespace App\Livewire;
 
 use App\Models\Customer;
@@ -15,11 +17,14 @@ class ShowCustomers extends Component
 
     // ----- PROPIEDADES PARA EL MODAL -----
     public $showModal = false;
+
     public $showDeleteModal = false;
 
     // ----- PROPIEDADES DEL MODELO CUSTOMER (PARA EL FORMULARIO) -----
     public ?Customer $currentCustomer = null;
+
     public $name;
+
     public $phone;
 
     /**
@@ -42,9 +47,9 @@ class ShowCustomers extends Component
     {
         $query = Customer::query();
 
-        if (!empty($this->search)) {
-            $query->where('name', 'LIKE', '%' . $this->search . '%')
-                ->orWhere('phone', 'LIKE', '%' . $this->search . '%');
+        if (! empty($this->search)) {
+            $query->where('name', 'LIKE', '%'.$this->search.'%')
+                ->orWhere('phone', 'LIKE', '%'.$this->search.'%');
         }
 
         $customers = $query->latest()->paginate(10);

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
-use App\Models\Category; // 1. Importar Category
-// 2. Importar los Form Requests (debes crearlos)
 use App\Http\Requests\StoreProductRequest;
-use App\Http\Requests\UpdateProductRequest;
+use App\Http\Requests\UpdateProductRequest; // 1. Importar Category
+// 2. Importar los Form Requests (debes crearlos)
+use App\Models\Category;
+use App\Models\Product;
 
 class ProductController extends Controller
 {

@@ -17,7 +17,7 @@ class CategoryFactory extends Factory
                 'Papelería',
                 'Juguetes',
                 'Ropa',
-                'Herramientas'
+                'Herramientas',
             ]),
             'active' => $this->faker->boolean(90), // 90% activas
         ];

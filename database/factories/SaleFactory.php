@@ -1,4 +1,5 @@
 <?php
+
 namespace Database\Factories;
 
 use App\Models\Customer;
@@ -16,7 +17,7 @@ class SaleFactory extends Factory
         $amountPaid = $total + $this->faker->randomFloat(2, 0, 50);
 
         return [
-            'sale_number' => 'VTA-' . date('Ymd') . '-' . $this->faker->unique()->numerify('####'),
+            'sale_number' => 'VTA-'.date('Ymd').'-'.$this->faker->unique()->numerify('####'),
             'customer_id' => Customer::factory(),
             'user_id' => User::factory(),
             'subtotal' => $subtotal,
