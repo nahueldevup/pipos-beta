@@ -4,9 +4,6 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Setting>
- */
 class SettingFactory extends Factory
 {
     /**
@@ -19,7 +16,7 @@ class SettingFactory extends Factory
         return [
             'group' => $this->faker->word(),
             'name' => $this->faker->unique()->word(),
-            'locked' => $this->faker->boolean(20), // 20% de chance de estar bloqueado
+            'locked' => $this->faker->boolean(20),
             'payload' => [
                 'key1' => $this->faker->word(),
                 'key2' => $this->faker->numberBetween(1, 100),
